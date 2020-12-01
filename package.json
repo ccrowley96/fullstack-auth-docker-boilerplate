@@ -1,0 +1,35 @@
+{
+  "name": "fullstack-boilerplate",
+  "version": "1.0.0",
+  "description": "Boilerplate for full-stack projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/index.js",
+    "build": "cd client/ && npm install && npm run build",
+    "server-dev": "cross-env NODE_ENV=dev nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccrowley96/fullstack-boilerplate.git"
+  },
+  "author": "Cory Crowley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ccrowley96/fullstack-boilerplate/issues"
+  },
+  "homepage": "https://github.com/ccrowley96/fullstack-boilerplate#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "shx": "^0.3.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.4.0",
+    "path": "^0.12.7"
+  }
+}
