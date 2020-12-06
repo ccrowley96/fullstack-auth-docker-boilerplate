@@ -1,20 +1,29 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv').config();
 const path = require('path');
+const db = require('./db/index');
+const morgan = require('morgan');
+const authApi = require('./routes/auth');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
+
+// Connect to mongo database
+db.connectDB();
+
+// Log all server-dev requests with morgan
+if(process.env.NODE_ENV === 'dev'){
+  app.use(morgan('dev'))
+}
 
 // Enable Cross Origin Requests with CORS
 app.use(cors({credentials: true, origin: true}));
 
-//Body Parser Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+// Use JSON
+app.use(express.json());
 
 // HTTPS Redirect for production
 if (process.env.NODE_ENV !== 'dev') {
@@ -47,12 +56,12 @@ const root = {
         return Math.random();
     },
     rollDice: ({numDice, numSides}) => {
-        let output = [];
-        for (let i = 0; i < numDice; i++) {
-          output.push(1 + Math.floor(Math.random() * (numSides || 6)));
-        }
-        return output;
+      let output = [];
+      for (let i = 0; i < numDice; i++) {
+        output.push(1 + Math.floor(Math.random() * (numSides || 6)));
       }
+      return output;
+    }
 };
 
 app.use('/graphql', graphqlHTTP({
@@ -60,6 +69,9 @@ app.use('/graphql', graphqlHTTP({
     rootValue: root,
     graphiql: true,
 }));
+
+// Rest API (used for auth)
+app.use('/api', authApi);
 
 // Static Files
 app.use(express.static(path.join(__dirname, '../client/build')));
