@@ -1,23 +1,18 @@
-import GoogleLogin from 'react-google-login';
+import {GoogleLogin, GoogleLogout} from 'react-google-login';
 import './App.scss';
 
 function App() {
-
-
-  const responseGoogle = async (response) => {
-    console.log(response);
-
-    let googleLoginResponse = await fetch(`/api/googleLogin`, {
+  const responseGoogle = async (googleResponse) => {
+    let response = await fetch(`/auth/googleLogin`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify({tokenId: response.tokenId})
+      body: JSON.stringify({tokenId: googleResponse.tokenId})
     });
 
-    let parsedgoogleLoginResponse = await googleLoginResponse.json();
-    console.log(parsedgoogleLoginResponse);
-
+    let parsedResponse = await response.json();
+    console.log(parsedResponse);
   }
 
   return (
@@ -28,6 +23,7 @@ function App() {
         buttonText="Login with Google"
         onSuccess={responseGoogle}
         onFailure={responseGoogle}
+        isSignedIn={true}
         cookiePolicy={'single_host_origin'}
       />
     </div>

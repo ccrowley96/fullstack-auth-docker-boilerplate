@@ -24,6 +24,8 @@
     "shx": "^0.3.3"
   },
   "dependencies": {
+    "apollo-datasource-mongodb": "^0.2.8",
+    "apollo-server-express": "^2.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

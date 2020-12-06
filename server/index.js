@@ -2,17 +2,21 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv').config();
 const path = require('path');
-const db = require('./db/index');
+const { connectDB, User } = require('./db/index');
 const morgan = require('morgan');
 const authApi = require('./routes/auth');
-const { graphqlHTTP } = require('express-graphql');
-const { buildSchema } = require('graphql');
+const { authenticateToken } = require('./middleware/authJwt');
+const typeDefs = require('./graphql/schema');
+const resolvers = require('./graphql/resolvers');
+const Users = require('./graphql/datasources/user');
+const { ApolloServer } = require('apollo-server-express');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const app = express();
 const port = process.env.PORT || 5000;
 
 // Connect to mongo database
-db.connectDB();
+connectDB();
 
 // Log all server-dev requests with morgan
 if(process.env.NODE_ENV === 'dev'){
@@ -37,46 +41,41 @@ if (process.env.NODE_ENV !== 'dev') {
   });
 }
 
-// Graph QL
-// Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-    type Query {
-        quoteOfTheDay: String
-        random: Float!
-        rollDice(numDice: Int!, numSides: Int): [Int]
-    }
-`);
+// Auth API used for login/sign-up
+app.use('/auth', authApi);
 
-// The root provides a resolver function for each API endpoint
-const root = {
-    quoteOfTheDay: () => {
-        return Math.random() < 0.5 ? 'Take it easy' : 'Salvation lies within';
-    },
-    random: () => {
-        return Math.random();
-    },
-    rollDice: ({numDice, numSides}) => {
-      let output = [];
-      for (let i = 0; i < numDice; i++) {
-        output.push(1 + Math.floor(Math.random() * (numSides || 6)));
-      }
-      return output;
-    }
-};
+// Verify JWT Token (Authenticate request)
+app.use(authenticateToken)
 
-app.use('/graphql', graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-}));
+// Set up Apollo context
+const context = async({req}) => {
+  let user = await User.findById(new ObjectId(req.userId));
+  if(user){
+    return {user}
+  }
+  return {user: null};
+}
 
-// Rest API (used for auth)
-app.use('/api', authApi);
+// Initialize Graph QL Apollo server
+const server = new ApolloServer({ 
+  typeDefs,
+  resolvers,
+  dataSources: () => {
+    users: new Users(User)
+  }, 
+  formatError: (err) => {
+    console.error(err);
+    return err;
+  },
+  context
+});
 
-// Static Files
+server.applyMiddleware({ app });
+
+// Serve static client build files
 app.use(express.static(path.join(__dirname, '../client/build')));
 
-//Default catch all -> to index.html
+//Default catch all -> to index.html (for react-router)
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, '../client/build/index.html'), function(err) {
     if (err) {

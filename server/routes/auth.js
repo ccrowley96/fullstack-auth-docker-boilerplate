@@ -1,8 +1,5 @@
 const express = require('express');
-
-// Import auth controllers
-const { googleLogin } = require('../controllers/auth');
-
+const { googleLogin } = require('../controllers/auth'); // Import auth controller
 const router = express.Router();
 
 router.post('/googleLogin', googleLogin);
