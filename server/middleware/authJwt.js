@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv').config();
 
 exports.authenticateToken = (req, res, next) => {
-    let token = req.headers.authorization.replace('Bearer ', '');
+    let token = req?.headers?.authorization?.replace('Bearer ', '');
     if(!token) {
-        return res.status(403).send({message: "No token provided!"});
+        return res.status(403).send({message: "No authorization token provided!"});
     }
 
     try{
@@ -12,6 +12,6 @@ exports.authenticateToken = (req, res, next) => {
         req.userId = user._id;
         next();
     } catch(err){
-        res.status(401).send({ message: "Unauthorized!" });
+        res.status(401).send({ message: "API access unauthorized!" });
     }
 }

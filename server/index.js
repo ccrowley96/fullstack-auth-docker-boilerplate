@@ -60,13 +60,9 @@ const context = async({req}) => {
 const server = new ApolloServer({ 
   typeDefs,
   resolvers,
-  dataSources: () => {
+  dataSources: () => ({
     users: new Users(User)
-  }, 
-  formatError: (err) => {
-    console.error(err);
-    return err;
-  },
+  }), 
   context
 });
 

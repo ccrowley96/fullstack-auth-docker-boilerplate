@@ -1,20 +1,12 @@
 const { MongoDataSource } = require('apollo-datasource-mongodb');
 const { User } = require('../../db/index');
+const ObjectId = require('mongoose').Types.ObjectId;
 
 class Users extends MongoDataSource{
-    async findMe(){
-        const email = this.context?.user?.email;
-        if(!email) return null;
-
-        const user = await User.findOne({email});
-        return user;
-    }
-
-    async findUser(email){
-        if(!email) return null;
-
-        const user = await User.findOne({email});
-        return user ? user : null;
+    async findUser(id){
+        if(!id) return null;
+        const user = await User.findById(new ObjectId(id));
+        return user ? user: null;
     }
 
     async getAllUsers(){
