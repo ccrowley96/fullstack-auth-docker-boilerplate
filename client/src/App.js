@@ -1,33 +1,31 @@
-import {GoogleLogin, GoogleLogout} from 'react-google-login';
+import React, { useContext, createContext, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useHistory,
+  useLocation
+} from "react-router-dom";
+import Login from './components/login/login';
 import './App.scss';
 
-function App() {
-  const responseGoogle = async (googleResponse) => {
-    let response = await fetch(`/auth/googleLogin`, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({tokenId: googleResponse.tokenId})
-    });
-
-    let parsedResponse = await response.json();
-    console.log(parsedResponse);
-  }
-
+export default function App() {
   return (
-    <div className="App">
-      <h1>Login with Google</h1>
-      <GoogleLogin
-        clientId="10363954666-veq3jlluet0her48ntgbcvoqk8fdkof7.apps.googleusercontent.com"
-        buttonText="Login with Google"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        isSignedIn={true}
-        cookiePolicy={'single_host_origin'}
-      />
-    </div>
+      <Router>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/">
+            <h2>Public Home page</h2>
+          </Route>
+          <Route path="/profile">
+            <h2>Protected user profile route</h2>
+          </Route>
+        </Switch>
+      </Router>
   );
 }
 
-export default App;
