@@ -38,7 +38,7 @@ export default function Login(){
                     buttonText="Login with Google"
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
-                    // isSignedIn={true}
+                    // isSignedIn={true} auto logs in user
                     cookiePolicy={'single_host_origin'}
                 />
             </div>

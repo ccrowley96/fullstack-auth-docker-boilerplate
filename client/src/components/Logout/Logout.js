@@ -17,7 +17,7 @@ export default function Logout(){
         auth.deauthenticateUser(() => history.replace('/login'));
     }
 
-    if(auth.isUserAuthenticated()){
+    if(auth.isUserAuthenticated() && location.pathname !== '/login'){
         return(
             <div className="googleLogout">
                 <GoogleLogout
