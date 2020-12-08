@@ -26,7 +26,7 @@ export default function Login(){
         let parsedResponse = await response.json();
 
         // Set auth state
-        auth.authenticateUser(parsedResponse, () => history.replace(from));
+        auth.authenticateUser(parsedResponse, () => history.push(from));
     }
 
     return(

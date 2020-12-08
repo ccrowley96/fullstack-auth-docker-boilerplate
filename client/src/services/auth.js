@@ -1,5 +1,6 @@
 import jwt_decode from "jwt-decode";
 import React, { useContext, createContext, useState } from "react";
+import { client } from '../App';
 
 const authContext = createContext();
 
@@ -18,7 +19,7 @@ export function useAuth(){
 }
 
 const getSessionFromLocalStorage = () => {
-    let sessionString = localStorage.getItem('user');
+    let sessionString = localStorage.getItem('session');
     if(sessionString){
         let session = JSON.parse(sessionString);
         if(session){
@@ -29,29 +30,30 @@ const getSessionFromLocalStorage = () => {
 }
 
 export function useProvideAuth(){
-    let userFromStorage = getSessionFromLocalStorage()?.user;
-    const [user, setUser] = useState(userFromStorage);
+    let sessionFromStorage = getSessionFromLocalStorage();
+    const [session, setSession] = useState(sessionFromStorage);
 
-    const authenticateUser = (user, cb) => {
-        setUser(user);
-        localStorage.setItem('user', JSON.stringify(user));
+    const authenticateUser = (session, cb) => {
+        setSession(session);
+        localStorage.setItem('session', JSON.stringify(session));
         cb();
     }
 
     const deauthenticateUser = cb => {
-        localStorage.removeItem('user');
-        setUser(null);
+        localStorage.removeItem('session');
+        client.clearStore();
+        setSession(null);
         cb();
     }
 
     const isUserAuthenticated = () => {
-        let user = getSessionFromLocalStorage();
-        if(user){
-            let token = user.token;
+        let session = getSessionFromLocalStorage();
+        if(session){
+            let token = session.token;
             const { exp } = jwt_decode(token);
             const expirationTime = (exp * 1000);
             if(Date.now() >= expirationTime){
-                localStorage.removeItem('user');
+                localStorage.removeItem('session');
             } else{
                 return true;
             }
@@ -60,16 +62,12 @@ export function useProvideAuth(){
     }
 
     const getToken = () => {
-        let userString = localStorage.getItem('user');
-        if(userString){
-            let user = JSON.parse(userString);
-            return user.token;
-        }
-        return null;
+        let session = getSessionFromLocalStorage();
+        return session?.token;
     }
 
     return {
-        user, 
+        session, 
         authenticateUser, 
         deauthenticateUser,
         isUserAuthenticated,

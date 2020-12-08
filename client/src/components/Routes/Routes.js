@@ -1,16 +1,18 @@
+import React, { useCallback } from 'react';
 import { useAuth } from '../../services/auth';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Redirect,
+    Link,
 } from "react-router-dom";
 import Login from '../Login/Login';
 import Logout from '../Logout/Logout';
 import Profile from '../Profile/Profile';
 
 export default function Routes(){
-    let auth = useAuth();
+  const auth = useAuth();
     return(
         <Router>
             <Switch>
@@ -18,11 +20,15 @@ export default function Routes(){
                     <Login />
                 </Route>
                 <PrivateRoute path="/profile">
-                    <TempPageHeader title={"Profile page"}/>
-                    <Profile/>
+                    <h3>Profile page</h3>
+                    <NavLink to="/" text="Home" />
+                    <Profile user={auth?.session?.user}/>
+                    <i>This is private content</i>
                 </PrivateRoute>
                 <Route path="/">
-                    <TempPageHeader title={"Home page"}/>
+                    <h3>Home page</h3>
+                    <NavLink to="/profile" text="Profile" />
+                    <i>This is public content</i>
                 </Route>
             </Switch>
             <Logout/>
@@ -30,12 +36,12 @@ export default function Routes(){
     )
 }
 
-function TempPageHeader({title}){
-    return(
-        <div style={{position: 'relative', top: '0px', left: '20px'}}>
-            <h3>{title}</h3>
-        </div>
-    )
+function NavLink({to, text}){
+  return(
+    <div style={{padding: "10px 0px"}}>
+      <Link to={to}>{text}</Link>
+    </div>
+  )
 }
 
 // A wrapper for <Route> that redirects to the login
