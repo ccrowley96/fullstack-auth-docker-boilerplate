@@ -44,6 +44,9 @@ To start the client in dev mode, open a new terminal window, change directory in
 1. Make sure mongodb is installed on your computer
 2. You may need to run `mongod` in a terminal window to start the local database
 
+## Start everything with concurrently
+You can also run `npm run dev` to start the server, the client, and the database all in the same terminal window.
+
 ## Test Graph QL Queries
 Navigate to `http://localhost:5000/graphql` to play around with your API and make test queries.  
 

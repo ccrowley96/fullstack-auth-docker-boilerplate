@@ -9,7 +9,7 @@
     "build": "cd client/ && npm install && npm run build",
     "server-dev": "cross-env NODE_ENV=dev nodemon server/index.js",
     "client-dev": "cd client/ && npm run start",
-    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\""
+    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\" \"mongod\""
   },
   "repository": {
     "type": "git",
