@@ -38,7 +38,7 @@ export default function Routes(){
 
 function NavLink({to, text}){
   return(
-    <div style={{padding: "10px 0px"}}>
+    <div style={{position: "absolute", top: "20px", right: "140px"}}>
       <Link to={to}>{text}</Link>
     </div>
   )
