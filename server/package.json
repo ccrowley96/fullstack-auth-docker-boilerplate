@@ -1,0 +1,47 @@
+{
+  "name": "fullstack-auth-docker-boilerplate-server",
+  "version": "1.0.0",
+  "description": "Node/Express server configured with Google auth and mongoose/mongo db",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=dev nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccrowley96/fullstack-boilerplate.git"
+  },
+  "author": "Cory Crowley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ccrowley96/fullstack-boilerplate/issues"
+  },
+  "homepage": "https://github.com/ccrowley96/fullstack-boilerplate#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "shx": "^0.3.3",
+    "ts-node": "^9.1.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.1.3"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.4",
+    "apollo-datasource-mongodb": "^0.2.8",
+    "apollo-server-express": "^2.19.0",
+    "concurrently": "^5.3.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.12.0",
+    "google-auth-library": "^6.1.3",
+    "graphql": "^15.4.0",
+    "install": "^0.13.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
+    "mongoose": "^5.11.4",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.6",
+    "npm": "^6.14.9",
+    "path": "^0.12.7"
+  }
+}

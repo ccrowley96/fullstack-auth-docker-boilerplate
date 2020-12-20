@@ -1,13 +1,16 @@
 {
-  "name": "client",
-  "proxy": "http://localhost:5000/",
+  "name": "fullstack-auth-docker-boilerplate-client",
+  "proxy": "http://api:5000/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.3.6",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.3.0",
+    "graphql": "^15.4.0",
     "install": "^0.13.0",
+    "jwt-decode": "^3.1.2",
     "node-sass": "^4.14.1",
     "npm": "^6.14.9",
     "react": "^17.0.1",

@@ -1,0 +1,45 @@
+version: "3.1"
+services:
+    client:
+        build: .
+        volumes:
+            - "./client:/app"
+        ports:
+            - "3000:3000"
+        depends_on: 
+            - server
+        restart: always
+
+    server:
+        container_name: api
+        build: 
+            context: .
+            args:
+                - NODE_ENV=dev
+        volumes:
+            - "./server:/app"
+        ports:
+            - "5000:5000"
+        environment:
+            PORT: "${PORT}"
+            DEV_DB_USER: "${DEV_DB_USER}"
+            DEV_DB_PASSWORD: "${DEV_DB_PASSWORD}"
+            JWT_SECRET: "${JWT_SECRET}"
+            GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+            
+        depends_on: 
+            - mongodb_container
+            
+    mongodb_container:
+        image: mongo:latest
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: "${DEV_DB_USER}"
+            MONGO_INITDB_ROOT_PASSWORD: "${DEV_DB_PASSWORD}"
+        ports:
+            - 27017:27017
+        volumes:
+            - mongodb_data_container:/data/db
+        restart: always
+       
+volumes:
+    mongodb_data_container:
