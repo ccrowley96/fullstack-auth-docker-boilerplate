@@ -1,7 +1,9 @@
 version: "3.1"
 services:
     client:
-        build: .
+        build:
+            context: ./client
+            dockerfile: ./Dockerfile
         volumes:
             - "./client:/app"
         ports:
@@ -13,7 +15,8 @@ services:
     server:
         container_name: api
         build: 
-            context: .
+            context: ./server
+            dockerfile: ./Dockerfile
             args:
                 - NODE_ENV=dev
         volumes:
