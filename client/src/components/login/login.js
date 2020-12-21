@@ -6,6 +6,7 @@ import {
 import { useAuth } from '../../services/auth';
 import { GoogleLogin } from 'react-google-login';
 import './Login.scss';
+import { parse } from "graphql";
 
 export default function Login(){
     let history = useHistory();
@@ -15,6 +16,7 @@ export default function Login(){
     let { from } = location.state || { from: { pathname: "/" } };
     
     const responseGoogle = async (googleResponse) => {
+        console.log(googleResponse)
         let response = await fetch(`/auth/googleLogin`, {
           method: 'POST',
           headers: {
@@ -22,11 +24,14 @@ export default function Login(){
           },
           body: JSON.stringify({tokenId: googleResponse.tokenId})
         });
-    
-        let parsedResponse = await response.json();
 
-        // Set auth state
-        auth.authenticateUser(parsedResponse, () => history.push(from));
+        if(response.status === 200){
+            let parsedResponse = await response.json();
+            // Set auth state
+            auth.authenticateUser(parsedResponse, () => history.push(from));
+        } else{
+            console.log('Google login failed')
+        }
     }
 
     return(

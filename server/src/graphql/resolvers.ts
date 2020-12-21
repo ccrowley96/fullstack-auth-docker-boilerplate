@@ -1,6 +1,4 @@
-const { User } = require('../db/index')
-
-module.exports = {
+export default {
     Query: {
         users: (_, __, { dataSources: { users } }) => {
             return users.getAllUsers();

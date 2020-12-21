@@ -2,11 +2,11 @@
   "name": "fullstack-auth-docker-boilerplate-server",
   "version": "1.0.0",
   "description": "Node/Express server configured with Google auth and mongoose/mongo db",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "NODE_ENV=dev nodemon -e ts --exec \"tsc && node ./dist/index.js\""
+    "start": "nodemon src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/ccrowley96/fullstack-boilerplate#readme",
   "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/node": "^14.14.14",
     "cross-env": "^7.0.2",
     "shx": "^0.3.3",
     "ts-node": "^9.1.1",
