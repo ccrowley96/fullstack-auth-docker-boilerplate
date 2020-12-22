@@ -22,12 +22,15 @@ The client, server, and database are then containerized using the `docker-compos
 - `auth.js` service to build auth context using React hooks, handle local storage control of auth token, get authentication status, and basic user details
 
 # Set up development environment
-## Create .env file at the root of the repository with the following fields
+## Create .env file in the `/server` folder of the repository with the following fields.
+*Note, it is import that the .env is placed in `/server` as that's where the docker context searches for environment variables when starting the server.
+
+
 |Key | Value|
 |-------- | -----|
 |PORT | `5000`|
-|DEV_DB_USER | `username`|
-|DEV_DB_PASSWORD | `password`|
+|DB_USER | `username`|
+|DB_PASSWORD | `password`|
 |GOOGLE_CLIENT_ID | client ID from console.cloud.google.com|
 |JWT_SECRET | any string that is complex and not easy to guess / brute force |
 
@@ -56,4 +59,3 @@ The client, server, and database are then containerized using the `docker-compos
 Once containers are running, navigate to `http://localhost:5000/graphql` to play around with your API and make test queries.  
 
 *Note `5000` should be replaced with the port you set in the .env file.  Also, because the API is protected by authentication middleware, you won't be able to access the graphql playground unless your requests contain a valid valid `Authorization: Bearer [token]`.  To get a valid token, you can log the token returned from the `/auth/googleLogin` API call on the frontend.  I recommend using the [Mod Header](https://bewisse.com/modheader/help/) chrome extension to attach the bearer token to the playground.
-

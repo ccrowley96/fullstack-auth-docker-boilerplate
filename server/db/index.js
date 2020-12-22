@@ -11,8 +11,8 @@ exports.connectDB = async () => {
         if(process.env.NODE_ENV === 'dev'){ // Connect to DEV DB
             conn = await mongoose.connect(`mongodb://mongodb_container:27017`, 
                 {
-                    user: process.env.DEV_DB_USER ,
-                    pass: process.env.DEV_DB_PASSWORD,
+                    user: process.env.DB_USER ,
+                    pass: process.env.DB_PASSWORD,
                     useNewUrlParser: true, 
                     useUnifiedTopology: true, 
                     useCreateIndex: true

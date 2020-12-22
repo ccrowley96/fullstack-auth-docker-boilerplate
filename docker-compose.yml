@@ -22,8 +22,8 @@ services:
             - "5000:5000"
         environment:
             PORT: "${PORT}"
-            DEV_DB_USER: "${DEV_DB_USER}"
-            DEV_DB_PASSWORD: "${DEV_DB_PASSWORD}"
+            DB_USER: "${DB_USER}"
+            DB_PASSWORD: "${DB_PASSWORD}"
             JWT_SECRET: "${JWT_SECRET}"
             GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
             
@@ -33,8 +33,8 @@ services:
     mongodb_container:
         image: mongo:latest
         environment:
-            MONGO_INITDB_ROOT_USERNAME: "${DEV_DB_USER}"
-            MONGO_INITDB_ROOT_PASSWORD: "${DEV_DB_PASSWORD}"
+            MONGO_INITDB_ROOT_USERNAME: "${DB_USER}"
+            MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD}"
         ports:
             - 27017:27017
         volumes:
