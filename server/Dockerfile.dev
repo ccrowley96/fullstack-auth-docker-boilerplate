@@ -1,0 +1,13 @@
+# download a base version of node from Docker Hub
+FROM node
+
+# create the working directory for the application called /app that will be the root
+WORKDIR /app
+
+COPY ./package*.json ./
+
+ENV NODE_ENV=dev
+
+RUN npm install
+
+USER node

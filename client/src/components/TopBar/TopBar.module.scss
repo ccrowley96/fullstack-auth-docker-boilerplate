@@ -1,0 +1,27 @@
+.topBar{
+    height: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.navItem{
+    height: 100%;
+    margin: 0px 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile{
+    width: 60px;
+    .imgWrapper{
+        height: 60%;
+        width: 60%;
+        .userImg{
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+        }
+    }
+}

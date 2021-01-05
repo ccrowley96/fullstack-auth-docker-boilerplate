@@ -1,7 +1,9 @@
-version: "3.1"
+version: "3.7"
 services:
     client:
-        build: .
+        build:
+            context: ./client
+            dockerfile: ./Dockerfile
         volumes:
             - "./client:/app"
         ports:
@@ -13,13 +15,16 @@ services:
     server:
         container_name: api
         build: 
-            context: .
-            args:
-                - NODE_ENV=dev
+            context: ./server
+            dockerfile: Dockerfile.dev
         volumes:
-            - "./server:/app"
+            - ./server:/app
+        expose:
+            - "5000"
         ports:
             - "5000:5000"
+            - "9229:9229"
+        command: npm start
         environment:
             PORT: "${PORT}"
             DB_USER: "${DB_USER}"

@@ -1,12 +1,14 @@
-const { OAuth2Client } = require('google-auth-library');
-const jwt = require('jsonwebtoken');
-const { User } = require('../db/index');
+import { OAuth2Client } from 'google-auth-library';
+import jwt from 'jsonwebtoken';
+import express from 'express';
+import { User } from '../db/index';
+
 
 const client = new OAuth2Client(
     process.env.GOOGLE_CLIENT_ID
 )
 
-const sendUserInfo = (res, user) => {
+const sendUserInfo = (res: express.Response, user) => {
     const {_id, name, email} = user;
     const token = jwt.sign({_id}, process.env.JWT_SECRET, {expiresIn: '7d'})
 
@@ -16,14 +18,21 @@ const sendUserInfo = (res, user) => {
     })
 }
 
-exports.googleLogin = async (req, res) => {
+export const googleLogin = async (req: express.Request, res: express.Response) => {
     const { tokenId } = req.body;
-
-    let response = await client.verifyIdToken({idToken: tokenId, audience: process.env.GOOGLE_CLIENT_ID});
-    let {name, given_name, family_name, email, picture} = response.payload;
+    let response: any;
+    try{
+        response = await client.verifyIdToken({idToken: tokenId, audience: process.env.GOOGLE_CLIENT_ID});
+    } catch(err){
+        console.log(err);
+        res.status(400).json({error: "Error verifying ID token"});
+        return;
+    }
+    
+    const {name, given_name, family_name, email, picture} = response.payload;
 
     try{
-        let user = await User.findOne({email});
+        const user = await User.findOne({email});
         if(user){
             sendUserInfo(res, user);
         } else{

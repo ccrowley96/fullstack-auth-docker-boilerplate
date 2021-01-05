@@ -1,8 +1,33 @@
-# download a base version of node from Docker Hub
-FROM node:14
+# Prod docker config
 
-# create the working directory for the application called /app that will be the root
-WORKDIR /app
+FROM node as prod
 
-# npm install the dependencies and run the start script from each package.json
-CMD ls -ltr && npm install && npm start
+ENV NODE_ENV=prod
+
+# Set up and build client
+
+WORKDIR /app/client
+
+COPY ./client/package*.json ./
+
+RUN npm install
+
+COPY ./client ./
+
+RUN npm run build
+
+# Set up server
+
+WORKDIR /app/server
+
+COPY server/package*.json ./
+
+RUN npm install
+
+COPY ./server ./
+
+RUN npm run build
+
+EXPOSE 5000
+
+CMD ["node", "dist/index.js"]

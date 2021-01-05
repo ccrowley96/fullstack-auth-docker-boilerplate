@@ -1,22 +1,29 @@
 {
-    "compilerOptions": {
-      "target": "es5",                          
-      "module": "commonjs",                    
-      "lib": ["es6"],                     
-      "allowJs": true,
-      "outDir": "build",                          
-      "rootDir": "src",
-      "strict": true,         
-      "noImplicitAny": true,
+  "compilerOptions": {
+      "module": "commonjs",
       "esModuleInterop": true,
-      "resolveJsonModule": true,
-      "types": ["node", "@types/jest"],
-      "typeRoots" : ["./node_modules/@types"],
-    },
-    "include": [
-      "server/**/*"
-    ],
-    "exclude" : [
-      "server/**/*.spec.ts"
-    ]
+      "target": "es6",
+      "noImplicitAny": false,
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "dist",
+      "baseUrl": ".",
+      "allowJs": true,
+      "paths": {
+          "*": [
+              "node_modules/*"
+          ]
+      },
+      "types": [
+        "node"
+      ]
+  },
+  "include": [
+      "src/**/*"
+  ],
+  "exclude": 
+  [
+    "node_modules", 
+    "**/*.spec.ts"
+  ]
 }

@@ -3,18 +3,23 @@ import {
     useHistory,
     useLocation
 } from "react-router-dom";
-import { useAuth } from '../../services/auth';
+import { useAuth } from '../../hooks/auth';
 import { GoogleLogin } from 'react-google-login';
-import './Login.scss';
+import { useTheme } from "../../hooks/provideTheme";
+
+import classNames from 'classnames/bind';
+const cx = classNames.bind(require('./Login.module.scss'));
 
 export default function Login(){
     let history = useHistory();
     let location = useLocation();
+    const { theme } = useTheme();
     let auth = useAuth();
 
     let { from } = location.state || { from: { pathname: "/" } };
     
     const responseGoogle = async (googleResponse) => {
+        console.log(googleResponse)
         let response = await fetch(`/auth/googleLogin`, {
           method: 'POST',
           headers: {
@@ -22,18 +27,22 @@ export default function Login(){
           },
           body: JSON.stringify({tokenId: googleResponse.tokenId})
         });
-    
-        let parsedResponse = await response.json();
 
-        // Set auth state
-        auth.authenticateUser(parsedResponse, () => history.push(from));
+        if(response.status === 200){
+            let parsedResponse = await response.json();
+            // Set auth state
+            auth.authenticateUser(parsedResponse, () => history.push(from));
+        } else{
+            console.log('Google login failed')
+        }
     }
 
     return(
-        <div className="loginWrapper">
-            <h3 className="loginTitle">Login to continue</h3>
-            <div className="googleLogin">
+        <div className={cx('loginWrapper')}>
+            <h3 className={cx('loginTitle')}>Login to continue</h3>
+            <div className={cx('googleLogin')}>
                 <GoogleLogin
+                    theme={theme}
                     clientId="10363954666-veq3jlluet0her48ntgbcvoqk8fdkof7.apps.googleusercontent.com"
                     buttonText="Login with Google"
                     onSuccess={responseGoogle}

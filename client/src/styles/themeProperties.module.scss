@@ -1,0 +1,26 @@
+/* 
+This file defines css properties which can be consumed in any style-sheet to
+maintain consistency in the app.  If you want to support multiple themes,
+you must add matching properties for each theme, otherwise, just add your
+--propertyName variables to the :root block.
+
+Example consumption:
+var(--color-btn-text) will grab the current --color-btn-text value 
+*/
+
+// Default styles
+:root{
+    --color-btn-text: #24292e;
+    --color-btn-bg: #fafbfc;
+    --color-bg-canvas: #fff;
+    --color-text-primary: #24292e;
+}
+
+
+// Dark theme styles
+[data-theme="dark"] {
+    --color-btn-text: #c9d1d9;
+    --color-btn-bg: #21262d;
+    --color-bg-canvas: #0d1117;
+    --color-text-primary: #c9d1d9;
+}

@@ -1,0 +1,13 @@
+@import '../../styles/base.module.scss'; // Gives this component access to base styles
+
+.profileWrapper{
+    width: 100%;
+    padding: 20px;
+    th, td {
+        padding: 10px;
+    }
+}
+
+.profileBtn{
+    margin: 20px 0px;
+}
