@@ -20,7 +20,6 @@ export default function Routes(){
                 <Route path="/login">
                     <Login />
                 </Route>
-                
                 <PrivateRoute path="/profile">
                     <TopBar />
                     <Profile user={auth?.session?.user}/>
@@ -32,14 +31,6 @@ export default function Routes(){
             </Switch>
         </Router>
     )
-}
-
-function NavLink({to, text}){
-  return(
-    <div style={{position: "absolute", top: "20px", right: "140px"}}>
-      <Link to={to}>{text}</Link>
-    </div>
-  )
 }
 
 // A wrapper for <Route> that redirects to the login

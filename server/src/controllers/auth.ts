@@ -5,7 +5,7 @@ import { User } from '../db/index';
 
 
 const client = new OAuth2Client(
-    process.env.GOOGLE_CLIENT_ID
+    process.env.GOOGLE_OAUTH_CLIENT_ID
 )
 
 const sendUserInfo = (res: express.Response, user) => {
@@ -22,7 +22,7 @@ export const googleLogin = async (req: express.Request, res: express.Response) =
     const { tokenId } = req.body;
     let response: any;
     try{
-        response = await client.verifyIdToken({idToken: tokenId, audience: process.env.GOOGLE_CLIENT_ID});
+        response = await client.verifyIdToken({idToken: tokenId, audience: process.env.GOOGLE_OAUTH_CLIENT_ID});
     } catch(err){
         console.log(err);
         res.status(400).json({error: "Error verifying ID token"});

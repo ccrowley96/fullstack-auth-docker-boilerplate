@@ -30,7 +30,7 @@ services:
             DB_USER: "${DB_USER}"
             DB_PASSWORD: "${DB_PASSWORD}"
             JWT_SECRET: "${JWT_SECRET}"
-            GOOGLE_CLIENT_ID: "${GOOGLE_CLIENT_ID}"
+            GOOGLE_OAUTH_CLIENT_ID: "${GOOGLE_OAUTH_CLIENT_ID}"
             
         depends_on: 
             - mongodb_container
