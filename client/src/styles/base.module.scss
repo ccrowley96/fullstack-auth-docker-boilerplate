@@ -1,0 +1,27 @@
+/*
+    This file contains base styles for the application.  You can access these styles by importing 
+    this file at the top of a components style-sheet
+
+    @import 'path-to-this-file/base.modules.scss' 
+
+    Then adding any of the class names in this file to a components className prop.
+
+    <button className={cx('_btn')}>Hello world</button>
+
+    It's a good idea to prefix these classNames with _ to differentiate them with component scoped 
+    styles.
+*/
+
+._btn{
+    color: var(--color-btn-text);
+    background-color: var(--color-btn-bg);
+    border-radius: 6px;
+    padding: 5px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid;
+    line-height: 20px;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+}

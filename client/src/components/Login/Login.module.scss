@@ -1,3 +1,5 @@
+@import '../../styles/base.module.scss'; // Gives this component access to base styles
+
 .loginWrapper{
     background-color: rgba(0,0,0,.1);
     border-radius: 8px;

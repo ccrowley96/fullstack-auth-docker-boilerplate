@@ -5,11 +5,11 @@ import path from 'path';
 import { connectDB, User } from './db/index';
 import morgan from 'morgan';
 import authApi from './routes/auth';
-import { authenticateToken } from './middleware/authJwt';
+import jwt from 'jsonwebtoken';
 import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
 import Users from './graphql/datasources/user';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import mongoose from 'mongoose';
 
 dotenv.config();
@@ -31,17 +31,17 @@ app.use(cors({credentials: true, origin: true}));
 // Use JSON
 app.use(express.json());
 
-// // HTTPS Redirect for production
-// if (process.env.NODE_ENV !== 'dev') {
-//   app.enable('trust proxy');
-//   app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
-//       if (req.secure) {
-//           next();
-//       } else {
-//           res.redirect('https://' + req.headers.host + req.url);
-//       }
-//   });
-// }
+// HTTPS Redirect for production
+if (process.env.NODE_ENV !== 'dev') {
+  app.enable('trust proxy');
+  app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+      if (req.secure) {
+          next();
+      } else {
+          res.redirect('https://' + req.headers.host + req.url);
+      }
+  });
+}
 
 // Serve static client build files
 app.use(express.static(path.join(__dirname, '../../client/build')));
@@ -49,25 +49,26 @@ app.use(express.static(path.join(__dirname, '../../client/build')));
 // Auth API used for login/sign-up
 app.use('/auth', authApi);
 
-// Default catch all -> to index.html (for react-router)
-app.get('/*', (_, res: express.Response) => {
-  res.sendFile(path.join(__dirname, '../../client/build/index.html'), function(err) {
-    if (err) {
-      res.status(500).send(err)
-    }
-  })
-})
-
-// Verify JWT Token (Authenticate request)
-app.use(authenticateToken)
-
-// Set up Apollo context
-const context = async({req}) => {
-  const user = await User.findById(new mongoose.Types.ObjectId(req.userId));
-  if(user){
-    return {user}
+// Use Apollo context to verify authentication token
+const context = async({req, res}) => {
+  const token = req?.headers?.authorization?.replace('Bearer ', '');
+  if(!token) {
+      throw new AuthenticationError('No authorization token provided!');
   }
-  return {user: null};
+  try{
+      const user = jwt.verify(token, process.env.JWT_SECRET);
+      req.userId = user._id;
+  } catch(err){
+    throw new AuthenticationError('API access unauthorized!');
+  }
+
+  const user = await User.findById(new mongoose.Types.ObjectId(req.userId));
+
+  if(user){
+    return { user }
+  } else{
+    throw new AuthenticationError('User not found');
+  }
 }
 
 // Initialize Graph QL Apollo server
@@ -81,6 +82,15 @@ const server = new ApolloServer({
 });
 
 server.applyMiddleware({ app });
+
+// Default catch all -> to index.html (for react-router)
+app.get('/*', (_, res: express.Response) => {
+  res.sendFile(path.join(__dirname, '../../client/build/index.html'), function(err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+})
 
 // Start Listening
 app.listen(port, () => {

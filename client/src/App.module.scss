@@ -1,0 +1,12 @@
+@import './styles/base.module.scss'; // Gives this component access to base styles
+body{
+    background-color: var(--color-bg-canvas); // Themed background
+    color: var(--color-text-primary); // Themed text color
+    width: 100%;
+}
+a{
+    color: var(--color-text-primary); // Themed text color
+}
+*{
+    box-sizing: border-box;
+}

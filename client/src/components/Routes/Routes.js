@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { useAuth } from '../../services/auth';
+import React from 'react';
+import { useAuth } from '../../hooks/auth';
 import {
     BrowserRouter as Router,
     Switch,
@@ -8,8 +8,9 @@ import {
     Link,
 } from "react-router-dom";
 import Login from '../Login/Login';
-import Logout from '../Logout/Logout';
 import Profile from '../Profile/Profile';
+import Home from '../Home/Home';
+import TopBar from '../TopBar/TopBar';
 
 export default function Routes(){
   const auth = useAuth();
@@ -19,19 +20,16 @@ export default function Routes(){
                 <Route path="/login">
                     <Login />
                 </Route>
+                
                 <PrivateRoute path="/profile">
-                    <h3>Profile page</h3>
-                    <NavLink to="/" text="Home" />
+                    <TopBar />
                     <Profile user={auth?.session?.user}/>
-                    <i>This is private content</i>
                 </PrivateRoute>
                 <Route path="/">
-                    <h3>Home page</h3>
-                    <NavLink to="/profile" text="Profile" />
-                    <i>This is public content</i>
+                    <TopBar />
+                    <Home />
                 </Route>
             </Switch>
-            <Logout/>
         </Router>
     )
 }

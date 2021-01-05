@@ -3,14 +3,17 @@ import {
     useHistory,
     useLocation
 } from "react-router-dom";
-import { useAuth } from '../../services/auth';
+import { useAuth } from '../../hooks/auth';
 import { GoogleLogin } from 'react-google-login';
-import './Login.scss';
-import { parse } from "graphql";
+import { useTheme } from "../../hooks/provideTheme";
+
+import classNames from 'classnames/bind';
+const cx = classNames.bind(require('./Login.module.scss'));
 
 export default function Login(){
     let history = useHistory();
     let location = useLocation();
+    const { theme } = useTheme();
     let auth = useAuth();
 
     let { from } = location.state || { from: { pathname: "/" } };
@@ -35,10 +38,11 @@ export default function Login(){
     }
 
     return(
-        <div className="loginWrapper">
-            <h3 className="loginTitle">Login to continue</h3>
-            <div className="googleLogin">
+        <div className={cx('loginWrapper')}>
+            <h3 className={cx('loginTitle')}>Login to continue</h3>
+            <div className={cx('googleLogin')}>
                 <GoogleLogin
+                    theme={theme}
                     clientId="10363954666-veq3jlluet0her48ntgbcvoqk8fdkof7.apps.googleusercontent.com"
                     buttonText="Login with Google"
                     onSuccess={responseGoogle}

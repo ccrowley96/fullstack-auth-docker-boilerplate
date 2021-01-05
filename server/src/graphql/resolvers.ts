@@ -1,4 +1,8 @@
 export default {
+    // More granular type resolvers go here
+    // <--
+
+    // Query resolvers
     Query: {
         users: (_, __, { dataSources: { users } }) => {
             return users.getAllUsers();
@@ -10,4 +14,6 @@ export default {
             return user
         }
     }
+    
+    // Mutation resolvers
 }
